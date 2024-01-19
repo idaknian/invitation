@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Wedding!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background: cyan;
+            margin-bottom: 20px;
+        }
+
+        main {
+            text-align: center;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 800px;
+            padding-left: 23px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            margin-top: 20px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        button {
+            background-color: cyan;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .cover, .invitation, .closing {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #darkModeButton {
+            padding: 30px;
+            margin: auto;
+            border-radius: 100%;
+            background-image: url('images/moon.jpeg');
+            background-size: cover;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            border: none;
+            cursor: pointer;
+            z-index: 999;
+            transition: background-image 0.5s ease;
+        }
+
+        .dark-mode {
+            background-color: #333;
+            color: white;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+            color: white;
+        }
+
+        .dark-mode p, .dark-mode a, .dark-mode button {
+            color: whitesmoke;
+        }
+
+        .dark-mode .cover, .dark-mode .invitation, .dark-mode .closing {
+            background-color: #111;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .dark-mode button.moon {
+            background-image: url('images/sun.jpeg');
+        }
+    </style>
+</head>
+<body>
+    <button id="darkModeButton"></button>
+    <header>
+        <h1>Surat Pernikahan</h1>
+    </header>
+
+    <main id="content">
+        <section class="cover">
+            <h1>Welcome to Our Wedding Reception</h1>
+            <p>Save the Date: 100 February, 2024</p>
+            <h2>The Wedding Of Owen & Fabian</h2>
+            <h4>Kepada Yang Diundang.</h4>
+            <p>Bapak/ibu/Saudara/i</p>
+            <h2>Ignatius Djony Setiadi</h2>
+            <button onclick="showPage('invitation')">View Invitation</button>
+        </section>
+
+        <section class="invitation hidden">
+            <button onclick="showPage('cover')">Back to Cover</button>
+            <h2>You're invited!</h2>
+            <p>We are excited to invite you to our wedding Celebration</p>
+            <p>Date:101/June/2023</p>
+            <p>Time: 6:00 PM </p>
+            <p>Venue: Ignatius Global School Lt.8</p>
+            <button onclick="showPage('closing')">Closing</button>
+        </section>
+
+        <section class="closing hidden">
+            <h2>Thank You!</h2>
+            <p>Thank you for coming to our special day.</p>
+            <p>We look forward to celebrating with you!</p>
+            <button onclick="showPage('cover')">Back to the Cover</button>
+        </section>
+    </main>
+
+    <footer>
+        Thank you for joining us!
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const button = document.getElementById('darkModeButton');
+            const html = document.documentElement;
+
+            button.addEventListener('click', () => {
+                html.classList.toggle('dark-mode');
+                button.classList.toggle('moon', html.classList.contains('dark-mode'));
+
+                updateDarkModeButtonImage();
+
+                const isDarkMode = html.classList.contains('dark-mode');
+                setCookie('darkModeEnabled', isDarkMode.toString(), 30);
+            });
+
+            function updateDarkModeButtonImage() {
+                const isDarkMode = html.classList.contains('dark-mode');
+                button.style.backgroundImage = isDarkMode ? "url('images/sun.jpeg')" : "url('images/moon.jpeg')";
+            }
+
+            function setCookie(name, value, days) {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+            }
+
+            function getCookie(name) {
+                const cookieName = `${name}=`;
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.indexOf(cookieName) === 0) {
+                        return cookie.substring(cookieName.length, cookie.length);
+                    }
+                }
+                return '';
+            }
+
+            function deleteCookie(name) {
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+            }
+
+            const isDarkModeEnabled = getCookie('darkModeEnabled') === 'true';
+            html.classList.toggle('dark-mode', isDarkModeEnabled);
+            button.classList.toggle('moon', isDarkModeEnabled);
+            updateDarkModeButtonImage();
+        });
+
+        function showPage(page) {
+            const pages = document.querySelectorAll('.cover, .invitation, .closing');
+            pages.forEach(page => page.classList.add('hidden'));
+
+            document.querySelector(`.${page}`).classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
