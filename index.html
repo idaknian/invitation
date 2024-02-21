@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Wedding!</title>
+    <title>Wedding Invitation!</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Verdana', sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            color: #333;
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         header {
             text-align: center;
             padding: 20px;
-            background: cyan;
+            background: #ecf0f1;
             margin-bottom: 20px;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         main {
@@ -26,19 +28,18 @@
             margin: 0 auto;
             max-width: 800px;
             padding-left: 23px;
-            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            background-color: white;
+            background-color: #ecf0f1;
             margin-top: 20px;
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         button {
-            background-color: cyan;
+            background-color: rgb(19, 75, 75);
             color: white;
             padding: 10px 20px;
             border: none;
@@ -62,6 +63,9 @@
             border-radius: 10px;
             margin: 0 auto;
             width: 80%;
+            background-color: #ecf0f1;
+            color: #333;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         .hidden {
@@ -84,9 +88,8 @@
         }
 
         .dark-mode {
-            background-color: #333;
+            background-color: black;
             color: white;
-            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
@@ -94,20 +97,24 @@
         }
 
         .dark-mode p, .dark-mode a, .dark-mode button {
-            color: whitesmoke;
+            color: #ccc;
+        }
+
+        .dark-mode header {
+            background-color: #333; /* Adjusted header color */
+            color: white;
         }
 
         .dark-mode .cover, .dark-mode .invitation, .dark-mode .closing {
-            background-color: #111;
+            background-color: #333;
             color: #fff;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .dark-mode footer {
-            background-color: #333;
-            color: #fff;
+            background-color: black;
+            color: white;
             text-align: center;
-            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         .dark-mode button.moon {
@@ -118,7 +125,7 @@
 <body>
     <button id="darkModeButton"></button>
     <header>
-        <h1>Surat Pernikahan</h1>
+        <h1>Wedding Invitation</h1>
     </header>
 
     <main id="content">
@@ -144,9 +151,9 @@
 
         <section class="closing hidden">
             <h2>Thank You!</h2>
-            <p>Thank you for coming to our special day.</p>
+            <p>Thank you for being a part of our special day.</p>
             <p>We look forward to celebrating with you!</p>
-            <button onclick="showPage('cover')">Back to the Cover</button>
+            <button onclick="showPage('cover')">Back to Cover</button>
         </section>
     </main>
 
@@ -158,56 +165,33 @@
         document.addEventListener('DOMContentLoaded', function () {
             const button = document.getElementById('darkModeButton');
             const html = document.documentElement;
-    
+
             button.addEventListener('click', () => {
                 html.classList.toggle('dark-mode');
                 button.classList.toggle('moon', html.classList.contains('dark-mode'));
-    
+
                 updateDarkModeButtonImage();
-    
-                const isDarkMode = html.classList.contains('dark-mode');
-                setCookie('darkModeEnabled', isDarkMode.toString(), 30);
+
+                localStorage.setItem('darkModeEnabled', html.classList.contains('dark-mode'));
             });
-    
+
             function updateDarkModeButtonImage() {
                 const isDarkMode = html.classList.contains('dark-mode');
                 button.style.backgroundImage = isDarkMode ? "url('images/sun.jpeg')" : "url('images/moon.jpeg')";
             }
-    
-            function setCookie(name, value, days) {
-                const expires = new Date();
-                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-                document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
-            }
-    
-            function getCookie(name) {
-                const cookieName = `${name}=`;
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    let cookie = cookies[i].trim();
-                    if (cookie.indexOf(cookieName) === 0) {
-                        return cookie.substring(cookieName.length, cookie.length);
-                    }
-                }
-                return '';
-            }
-    
-            function deleteCookie(name) {
-                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-            }
-    
-            const isDarkModeEnabled = getCookie('darkModeEnabled') === 'true';
+
+            const isDarkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
             html.classList.toggle('dark-mode', isDarkModeEnabled);
             button.classList.toggle('moon', isDarkModeEnabled);
             updateDarkModeButtonImage();
         });
-    
+
         function showPage(page) {
             const pages = document.querySelectorAll('.cover, .invitation, .closing');
             pages.forEach(page => page.classList.add('hidden'));
-    
+
             document.querySelector(`.${page}`).classList.remove('hidden');
         }
-    </script>    
+    </script>
 </body>
 </html>
